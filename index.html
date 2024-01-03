@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Task Tracker</title>
+    </head>
+    <body>
+        <div class="top">
+        </div>
+        <div class="bottom"></div>
+
+        <template id="start-task-template">
+            <form id="start-task" onsubmit="startTaskHandler(event)">
+                <input type="text" name="start-task-input" id="start-task-input" placeholder="Name of task..." />
+                <button type="submit">Start task</button>
+            </form>
+        </template>
+
+        <template id="end-task-template">
+            <form id="end-task" onsubmit="endTaskHandler(event)">
+                <div class="current-task-name"></div>
+                <div class="current-task-start-time"> </div>
+                <button type="submit">End task</button>
+            </form>
+        </template>
+
+        <template id="ended-list-template">
+            <ul>
+            </ul>
+        </template>
+        <script src="index.js"></script>
+    </body>
+</html>
