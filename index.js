@@ -101,17 +101,34 @@ const endTaskHandler = (event) => {
 
         localStorage.setItem('endedTasks', JSON.stringify(endedTasks))
 
-        const endedListUl = bottomContainer.querySelector('ul');
-        const endedListNewElement = document.createElement('li');
-        endedListNewElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
+        const endedList = endedListTemplate.content.cloneNode(true);
+        const endedListUl = bottomContainer.querySelector('.ended-list');
+        const endedListNewElement = endedList.querySelector('.ended-list__item').cloneNode(true);
+        endedListNewElement.querySelector('.ended-list__item__task-name')
+                           .textContent = taskName;
+        endedListNewElement.querySelector('.ended-list__item__task-start-date')
+                           .textContent = getDate(new Date(startTime));
+        endedListNewElement.querySelector('.ended-list__item__task-start-time')
+                           .textContent = getTime(new Date(startTime));
+        endedListNewElement.querySelector('.ended-list__item__task-end-time')
+                           .textContent = getTime(endTime);
+        // endedListNewElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
         endedListUl.appendChild(endedListNewElement)
     } else {
         localStorage.setItem('endedTasks', JSON.stringify([{ taskName, startTime, endTime }]))
         const endedList = endedListTemplate.content.cloneNode(true);
         const endedListUl = endedList.querySelector('ul');
         const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
-        const endedListElement = document.createElement('li');
-        endedListElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
+        const endedListElement = endedList.querySelector('.ended-list__item').cloneNode(true);
+        endedListElement.querySelector('.ended-list__item__task-name')
+                        .textContent = taskName;
+        endedListElement.querySelector('.ended-list__item__task-start-date')
+                        .textContent = getDate(new Date(startTime));
+        endedListElement.querySelector('.ended-list__item__task-start-time')
+                        .textContent = getTime(new Date(startTime));
+        endedListElement.querySelector('.ended-list__item__task-end-time')
+                        .textContent = getTime(endTime);
+        // endedListElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
         endedListUl.appendChild(endedListElement);
         bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
     }

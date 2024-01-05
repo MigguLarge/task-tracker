@@ -1,3 +1,5 @@
+/* TODO: Fix mobile */
+
 :root {
     --font-family: 'MaruBuri';
     --accent-color: #BFD4D9;
@@ -16,6 +18,8 @@
 
 .start-task {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .start-task__input {
@@ -25,7 +29,7 @@
     font-family: var(--font-family);
 }
 
-.start-task__btn {
+button {
     border-radius: .5em;
     border: none;
     padding: .75em;
@@ -35,7 +39,7 @@
     font-family: var(--font-family);
 }
 
-.start-task__btn:hover {
+button:hover {
     background-color: var(--accent-color-dark);
 }
 
@@ -58,4 +62,12 @@
 
 .ended-list__item:last-child {
     margin: 0;
+}
+
+.end-task {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1em;
+    justify-items: center;
+    align-items: center;
 }
