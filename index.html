@@ -2,30 +2,44 @@
 <html>
     <head>
         <title>Task Tracker</title>
+        <link href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet"/>
+        <link href="reset.css" rel="stylesheet"/>
     </head>
     <body>
-        <div class="top">
+        <div class="container">
+            <div class="top"></div>
+            <div class="bottom"></div>
         </div>
-        <div class="bottom"></div>
 
         <template id="start-task-template">
-            <form id="start-task" onsubmit="startTaskHandler(event)">
-                <input type="text" name="start-task-input" id="start-task-input" placeholder="Name of task..." />
-                <button type="submit">Start task</button>
+            <form class="start-task" onsubmit="startTaskHandler(event)">
+                <input class="start-task__input" name="start-task-input" placeholder="Name of task..." type="text" />
+                <button class="start-task__btn" type="submit">Start task</button>
             </form>
         </template>
 
         <template id="end-task-template">
-            <form id="end-task" onsubmit="endTaskHandler(event)">
-                <div class="current-task-name"></div>
-                <div class="current-task-start-time"> </div>
+            <form class="end-task" onsubmit="endTaskHandler(event)">
+                <div class="end-task__name"></div>
+                <div class="end-task__start-time"> </div>
                 <button type="submit">End task</button>
             </form>
         </template>
 
         <template id="ended-list-template">
-            <ul>
+            <ul class="ended-list">
+                <li class="ended-list__item">
+                    <span class="ended-list__item__task-name">Task Name</span>
+                    <span class="ended-list__item__task-start-date">Start Date</span>
+                    <span class="ended-list__item__task-start-time">Start Time</span>
+                    <span class="ended-list__item__task-end-time">End Time</span>
+                </li>
             </ul>
+        </template>
+
+        <template id="no-ended-tasks-template">
+            <h1 class="no-ended-tasks">There is no ended tasks yet!</h1>
         </template>
         <script src="index.js"></script>
     </body>
