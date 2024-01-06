@@ -25,20 +25,27 @@
             <form class="end-task" onsubmit="endTaskHandler(event)">
                 <div class="end-task__name"></div>
                 <div class="end-task__start-time"> </div>
-                <button type="submit">End task</button>
+                <div class="buttons">
+                    <button type="submit">End task</button>
+                    <button onclick="cancelTaskHandler(event)">Cancel task</button>
+                </div>
             </form>
         </template>
 
         <template id="ended-list-template">
-            <ul class="ended-list">
-                <li class="ended-list__item">
+            <ul class="ended-list"></ul>
+            <button class="clear-ended-list-btn" onclick="clearEndedList(event)">Clear List</button>
+        </template>
+
+        <template id="ended-list__item-template">
+            <li class="ended-list__item">
+                <span class="ended-list__item__info">
                     <span class="ended-list__item__task-name">Task Name</span>
                     <span class="ended-list__item__task-start-date">Start Date</span>
-                    <!-- <span class="ended-list__item__task-start-time">Start Time</span>
-                         <span class="ended-list__item__task-end-time">End Time</span> -->
-                    <span class="ended-list__item__task-time">Time</span>
-                </li>
-            </ul>
+                    <span class="ended-list__item__task-time">Start Time ~ End Time</span>
+                </span>
+                <button class="ended-list__item__delete-task-btn" onclick="deleteTask(this)">Delete</button>
+            </li>
         </template>
 
         <template id="no-ended-tasks-template">

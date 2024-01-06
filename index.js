@@ -1,11 +1,10 @@
-// TODO: Add clear task list button
-
 const topContainer = document.querySelector('.top');
 const bottomContainer = document.querySelector('.bottom');
 
 const startTaskTemplate = document.querySelector('#start-task-template');
 const endTaskTemplate = document.querySelector('#end-task-template');
 const endedListTemplate = document.querySelector('#ended-list-template');
+const endedListItemTemplate = document.querySelector('#ended-list__item-template');
 const noEndedTasksTemplate = document.querySelector('#no-ended-tasks-template');
 
 const getTime = (dateObj) => {
@@ -27,6 +26,31 @@ const getDate = (dateObj) => {
     const month = (dateObj.getMonth() + 1).toString().length == 2 ? dateObj.getMonth() + 1 : '0' + (dateObj.getMonth() + 1);
     const date = dateObj.getDate().toString().length == 2 ? dateObj.getDate() : '0' + dateObj.getDate();
     return year + '-' + month + '-' + date;
+}
+
+const createTaskID = () => {
+    const id = Math.floor(Math.random()*100);
+    const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+
+    if (!endedTasks || endedTasks.find((element) => element.id == id) == undefined) {
+        return id;
+    } else {
+        return createTaskID();
+    }
+}
+
+const createEndedListElement = (id, taskName, startDate, startTime, endTime) => {
+    const endedListElement = endedListItemTemplate.content.cloneNode(true);
+
+    endedListElement.querySelector('.ended-list__item').setAttribute('id', 'task-' + id);
+    endedListElement.querySelector('.ended-list__item__task-name')
+        .textContent = taskName;
+    endedListElement.querySelector('.ended-list__item__task-start-date')
+        .textContent = startDate;
+    endedListElement.querySelector('.ended-list__item__task-time')
+        .textContent = startTime + ' ~ ' + endTime
+
+    return endedListElement;
 }
 
 const pageInit = () => {
@@ -51,21 +75,11 @@ const pageInit = () => {
             const endTime = getTime(new Date(task.endTime));
             const endDate = getDate(new Date(task.endTime));
 
-            const endedListElement = endedList.querySelector('.ended-list__item').cloneNode(true);
-            endedListElement.querySelector('.ended-list__item__task-name')
-                .textContent = task.taskName;
-            endedListElement.querySelector('.ended-list__item__task-start-date')
-                .textContent = startDate;
-            // endedListElement.querySelector('.ended-list__item__task-start-time')
-            //     .textContent = startTime;
-            // endedListElement.querySelector('.ended-list__item__task-end-time')
-            //     .textContent = endTime;
-            endedListElement.querySelector('.ended-list__item__time')
-                            .textContent = startTime + ' ~ ' + endTime
-
             // endedListElement.textContent = `${task.taskName} ${startDate} ${startTime} ~ ${endTime}`;
 
-            endedListUl.appendChild(endedListElement);
+            endedListUl.appendChild(
+                createEndedListElement(task.id, task.taskName, startDate, startTime, endTime)
+            );
         });
         bottomContainer.appendChild(endedList);
     } else {
@@ -92,60 +106,89 @@ const startTaskHandler = (event) => {
 
 const endTaskHandler = (event) => {
     event.preventDefault();
-    const currentTask = JSON.parse(localStorage.getItem('currentTask'));
-    const { taskName, startTime } = currentTask;
-    const endTime = new Date();
+    if (window.confirm('End current task?')) {
+        const id = createTaskID();
+        const currentTask = JSON.parse(localStorage.getItem('currentTask'));
+        const { taskName, startTime } = currentTask;
+        const endTime = new Date();
 
-    if (localStorage.getItem('endedTasks') !== null) {
-        const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
-        console.log(endedTasks);
-        endedTasks.push({ taskName, startTime, endTime });
-        console.log(endedTasks);
-        console.log(JSON.stringify(endedTasks))
+        if (localStorage.getItem('endedTasks') !== null) {
+            const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+            endedTasks.push({ id, taskName, startTime, endTime });
 
-        localStorage.setItem('endedTasks', JSON.stringify(endedTasks))
+            localStorage.setItem('endedTasks', JSON.stringify(endedTasks))
 
-        const endedList = endedListTemplate.content.cloneNode(true);
-        const endedListUl = bottomContainer.querySelector('.ended-list');
-        const endedListNewElement = endedList.querySelector('.ended-list__item').cloneNode(true);
-        endedListNewElement.querySelector('.ended-list__item__task-name')
-                           .textContent = taskName;
-        endedListNewElement.querySelector('.ended-list__item__task-start-date')
-                           .textContent = getDate(new Date(startTime));
-        // endedListNewElement.querySelector('.ended-list__item__task-start-time')
-        //                    .textContent = getTime(new Date(startTime));
-        // endedListNewElement.querySelector('.ended-list__item__task-end-time')
-        //                    .textContent = getTime(endTime);
-        endedListElement.querySelector('.ended-list__item__time')
-                        .textContent = getTime(new Date(startTime)) + ' ~ ' + getTime(endTime)
-        // endedListNewElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
-        endedListUl.appendChild(endedListNewElement)
-    } else {
-        localStorage.setItem('endedTasks', JSON.stringify([{ taskName, startTime, endTime }]))
-        const endedList = endedListTemplate.content.cloneNode(true);
-        const endedListUl = endedList.querySelector('ul');
-        const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
-        const endedListElement = endedList.querySelector('.ended-list__item').cloneNode(true);
-        endedListElement.querySelector('.ended-list__item__task-name')
-                        .textContent = taskName;
-        endedListElement.querySelector('.ended-list__item__task-start-date')
-                        .textContent = getDate(new Date(startTime));
-        // endedListElement.querySelector('.ended-list__item__task-start-time')
-        //                 .textContent = getTime(new Date(startTime));
-        // endedListElement.querySelector('.ended-list__item__task-end-time')
-        //                 .textContent = getTime(endTime);
-        endedListElement.querySelector('.ended-list__item__time')
-                        .textContent = getTime(new Date(startTime)) + ' ~ ' + getTime(endTime)
-        // endedListElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
-        endedListUl.appendChild(endedListElement);
-        bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
+            const endedList = endedListTemplate.content.cloneNode(true);
+            const endedListUl = bottomContainer.querySelector('.ended-list');
+            const endedListNewElement = endedListItemTemplate.content.cloneNode(true);
+
+            const startTimeObj = new Date(startTime)
+
+            endedListUl.appendChild(
+                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime))
+            );
+        } else {
+            localStorage.setItem('endedTasks', JSON.stringify([{ id, taskName, startTime, endTime }]))
+            const endedList = endedListTemplate.content.cloneNode(true);
+            const endedListUl = endedList.querySelector('ul');
+            const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+
+            const startTimeObj = new Date(startTime)
+
+            endedListUl.appendChild(
+                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime))
+            );
+            bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
+        }
+
+        const endTaskForm = event.target;
+        const startTaskForm = startTaskTemplate.content.cloneNode(true);
+        endTaskForm.parentNode.replaceChild(startTaskForm, endTaskForm);
+
+        localStorage.removeItem('currentTask');
     }
+}
 
-    const endTaskForm = event.target;
-    const startTaskForm = startTaskTemplate.content.cloneNode(true);
-    endTaskForm.parentNode.replaceChild(startTaskForm, endTaskForm);
+const cancelTaskHandler = (event) => {
+    event.preventDefault();
 
-    localStorage.removeItem('currentTask');
+    if (window.confirm('Cancel current task?')) {
+        localStorage.removeItem('currentTask');
+        const endTaskForm = document.querySelector('.end-task');
+        const startTaskForm = startTaskTemplate.content.cloneNode(true);
+        endTaskForm.parentNode.replaceChild(startTaskForm, endTaskForm);
+    }
+}
+
+const clearEndedList = (event) => {
+    event.preventDefault();
+    localStorage.removeItem('endedTasks');
+    const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
+
+    // Remove inner html of bottom container and then append noEndedTasks
+    // to replace all children of bottom container
+    bottomContainer.innerHTML = '';
+    bottomContainer.appendChild(noEndedTasks);
+}
+
+const deleteTask = (element) => {
+    const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+    const listElement = element.parentElement;
+    if (endedTasks.length == 1) {
+        localStorage.removeItem('endedTasks');
+        listElement.remove();
+
+        const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
+        bottomContainer.innerHTML = '';
+        bottomContainer.appendChild(noEndedTasks);
+    } else {
+        const id = Number(listElement.getAttribute('id').split('-')[1]);
+        // Map endedTasks to be array of ids to use indexOf function
+        const index = endedTasks.map(item => item.id).indexOf(id)
+
+        localStorage.setItem('endedTasks', JSON.stringify(endedTasks.toSpliced(index, 1)));
+        listElement.remove();
+    }
 }
 
 pageInit();
