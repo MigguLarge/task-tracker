@@ -1,3 +1,5 @@
+// TODO: Add clear task list button
+
 const topContainer = document.querySelector('.top');
 const bottomContainer = document.querySelector('.bottom');
 
@@ -54,10 +56,12 @@ const pageInit = () => {
                 .textContent = task.taskName;
             endedListElement.querySelector('.ended-list__item__task-start-date')
                 .textContent = startDate;
-            endedListElement.querySelector('.ended-list__item__task-start-time')
-                .textContent = startTime;
-            endedListElement.querySelector('.ended-list__item__task-end-time')
-                .textContent = endTime;
+            // endedListElement.querySelector('.ended-list__item__task-start-time')
+            //     .textContent = startTime;
+            // endedListElement.querySelector('.ended-list__item__task-end-time')
+            //     .textContent = endTime;
+            endedListElement.querySelector('.ended-list__item__time')
+                            .textContent = startTime + ' ~ ' + endTime
 
             // endedListElement.textContent = `${task.taskName} ${startDate} ${startTime} ~ ${endTime}`;
 
@@ -108,10 +112,12 @@ const endTaskHandler = (event) => {
                            .textContent = taskName;
         endedListNewElement.querySelector('.ended-list__item__task-start-date')
                            .textContent = getDate(new Date(startTime));
-        endedListNewElement.querySelector('.ended-list__item__task-start-time')
-                           .textContent = getTime(new Date(startTime));
-        endedListNewElement.querySelector('.ended-list__item__task-end-time')
-                           .textContent = getTime(endTime);
+        // endedListNewElement.querySelector('.ended-list__item__task-start-time')
+        //                    .textContent = getTime(new Date(startTime));
+        // endedListNewElement.querySelector('.ended-list__item__task-end-time')
+        //                    .textContent = getTime(endTime);
+        endedListElement.querySelector('.ended-list__item__time')
+                        .textContent = getTime(new Date(startTime)) + ' ~ ' + getTime(endTime)
         // endedListNewElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
         endedListUl.appendChild(endedListNewElement)
     } else {
@@ -124,10 +130,12 @@ const endTaskHandler = (event) => {
                         .textContent = taskName;
         endedListElement.querySelector('.ended-list__item__task-start-date')
                         .textContent = getDate(new Date(startTime));
-        endedListElement.querySelector('.ended-list__item__task-start-time')
-                        .textContent = getTime(new Date(startTime));
-        endedListElement.querySelector('.ended-list__item__task-end-time')
-                        .textContent = getTime(endTime);
+        // endedListElement.querySelector('.ended-list__item__task-start-time')
+        //                 .textContent = getTime(new Date(startTime));
+        // endedListElement.querySelector('.ended-list__item__task-end-time')
+        //                 .textContent = getTime(endTime);
+        endedListElement.querySelector('.ended-list__item__time')
+                        .textContent = getTime(new Date(startTime)) + ' ~ ' + getTime(endTime)
         // endedListElement.textContent = `${taskName} ${getTime(new Date(startTime))} ~ ${getTime(endTime)}`;
         endedListUl.appendChild(endedListElement);
         bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
