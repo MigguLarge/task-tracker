@@ -1,33 +1,63 @@
 :root {
-    --font-family: 'MaruBuri';
+    --font-family: 'MaruBuri', serif;
     --accent-color: #BFD4D9;
+    /* --accent-color-dark: #9FB1B5; */
     --accent-color-dark: #A7C6D9;
     font-family: var(--font-family);
 }
 
+form {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+
+input[type="text"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+}
+
 button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     width: max-content;
     height: max-content;
-    border-radius: .5em;
-    border: none;
-    padding: .75em;
+    border: 0;
+    padding: .5em;
     background-color: var(--accent-color);
     color: black;
     transition: .1s;
     font-family: var(--font-family);
+    font-weight: 100;
     white-space: nowrap;
 }
 
-button:hover {
-    background-color: var(--accent-color-dark);
+@media(hover: hover) and (pointer: fine) {
+    button:hover {
+        background-color: var(--accent-color-dark);
+    }
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+}
+
+.header__title {
+    font-size: 1.5rem;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    justify-content: center;
-    align-items: center;
     margin: 0 auto;
     padding: 1em;
     width: 100%;
@@ -47,19 +77,19 @@ button:hover {
 .start-task__input {
     border: none;
     border-radius: none;
-    -webkit-border-radius: none;
     border-bottom: 1px solid black;
     margin-right: .5em;
     font-family: var(--font-family);
-    width: 90%;
+    width: 100%;
 }
 
 .end-task {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 1em;
-    justify-items: center;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.end-task__buttons {
+    margin-top: .5em;
 }
 
 .ended-list {
@@ -92,9 +122,8 @@ button:hover {
 }
 
 .ended-list__item__info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .clear-ended-list-btn {
@@ -104,5 +133,14 @@ button:hover {
 @media (max-width: 30em) {
     .container {
         max-width: none;
+    }
+
+    .content {
+        border-left: none;
+        border-right: none;
+    }
+
+    input, button {
+        font-size: 1rem;
     }
 }

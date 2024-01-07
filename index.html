@@ -9,6 +9,10 @@
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
+        <header>
+            <h1 class="header__title">Task Tracker</h1>
+            <p class="header__description">Record start and end time of task</p>
+        </header>
         <div class="container">
             <div class="top"></div>
             <div class="bottom"></div>
@@ -25,7 +29,7 @@
             <form class="end-task" onsubmit="endTaskHandler(event)">
                 <div class="end-task__name"></div>
                 <div class="end-task__start-time"> </div>
-                <div class="buttons">
+                <div class="end-task__buttons">
                     <button type="submit">End task</button>
                     <button onclick="cancelTaskHandler(event)">Cancel task</button>
                 </div>
