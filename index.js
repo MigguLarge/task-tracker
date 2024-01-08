@@ -162,32 +162,36 @@ const cancelTaskHandler = (event) => {
 
 const clearEndedList = (event) => {
     event.preventDefault();
-    localStorage.removeItem('endedTasks');
-    const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
+    if (window.confirm('Clear ended task list?')) {
+        localStorage.removeItem('endedTasks');
+        const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
 
-    // Remove inner html of bottom container and then append noEndedTasks
-    // to replace all children of bottom container
-    bottomContainer.innerHTML = '';
-    bottomContainer.appendChild(noEndedTasks);
+        // Remove inner html of bottom container and then append noEndedTasks
+        // to replace all children of bottom container
+        bottomContainer.innerHTML = '';
+        bottomContainer.appendChild(noEndedTasks);
+    }
 }
 
 const deleteTask = (element) => {
-    const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
-    const listElement = element.parentElement;
-    if (endedTasks.length == 1) {
-        localStorage.removeItem('endedTasks');
-        listElement.remove();
+    if (window.confirm('Delete task from list?')) {
+        const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+        const listElement = element.parentElement;
+        if (endedTasks.length == 1) {
+            localStorage.removeItem('endedTasks');
+            listElement.remove();
 
-        const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
-        bottomContainer.innerHTML = '';
-        bottomContainer.appendChild(noEndedTasks);
-    } else {
-        const id = Number(listElement.getAttribute('id').split('-')[1]);
-        // Map endedTasks to be array of ids to use indexOf function
-        const index = endedTasks.map(item => item.id).indexOf(id)
+            const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
+            bottomContainer.innerHTML = '';
+            bottomContainer.appendChild(noEndedTasks);
+        } else {
+            const id = Number(listElement.getAttribute('id').split('-')[1]);
+            // Map endedTasks to be array of ids to use indexOf function
+            const index = endedTasks.map(item => item.id).indexOf(id)
 
-        localStorage.setItem('endedTasks', JSON.stringify(endedTasks.toSpliced(index, 1)));
-        listElement.remove();
+            localStorage.setItem('endedTasks', JSON.stringify(endedTasks.toSpliced(index, 1)));
+            listElement.remove();
+        }
     }
 }
 
