@@ -29,7 +29,7 @@ const getDate = (dateObj) => {
 }
 
 const createTaskID = () => {
-    const id = Math.floor(Math.random()*100);
+    const id = Math.floor(Math.random() * 100);
     const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
 
     if (!endedTasks || endedTasks.find((element) => element.id == id) == undefined) {
@@ -74,9 +74,6 @@ const pageInit = () => {
             const startDate = getDate(new Date(task.startTime));
             const endTime = getTime(new Date(task.endTime));
             const endDate = getDate(new Date(task.endTime));
-
-            // endedListElement.textContent = `${task.taskName} ${startDate} ${startTime} ~ ${endTime}`;
-
             endedListUl.appendChild(
                 createEndedListElement(task.id, task.taskName, startDate, startTime, endTime)
             );
@@ -113,8 +110,9 @@ const endTaskHandler = (event) => {
         const endTime = new Date();
 
         if (localStorage.getItem('endedTasks') !== null) {
-            const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
-            endedTasks.push({ id, taskName, startTime, endTime });
+            let endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+            // endedTasks.push({ id, taskName, startTime, endTime });
+            endedTasks = [{ id, taskName, startTime, endTime }, ...endedTasks];
 
             localStorage.setItem('endedTasks', JSON.stringify(endedTasks))
 
@@ -124,8 +122,9 @@ const endTaskHandler = (event) => {
 
             const startTimeObj = new Date(startTime)
 
-            endedListUl.appendChild(
-                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime))
+            endedListUl.insertBefore(
+                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
+                endedListUl.firstChild
             );
         } else {
             localStorage.setItem('endedTasks', JSON.stringify([{ id, taskName, startTime, endTime }]))
@@ -135,12 +134,12 @@ const endTaskHandler = (event) => {
 
             const startTimeObj = new Date(startTime)
 
-            endedListUl.appendChild(
-                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime))
+            endedListUl.insertBefore(
+                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
+                endedListUl.firstChild
             );
             bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
         }
-
         const endTaskForm = event.target;
         const startTaskForm = startTaskTemplate.content.cloneNode(true);
         endTaskForm.parentNode.replaceChild(startTaskForm, endTaskForm);
@@ -182,6 +181,8 @@ const deleteTask = (element) => {
             listElement.remove();
 
             const noEndedTasks = noEndedTasksTemplate.content.cloneNode(true);
+            // Remove inner html of bottom container and then append noEndedTasks
+            // to replace all children of bottom container
             bottomContainer.innerHTML = '';
             bottomContainer.appendChild(noEndedTasks);
         } else {
