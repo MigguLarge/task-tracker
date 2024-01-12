@@ -29,7 +29,7 @@ const getDate = (dateObj) => {
 }
 
 const createTaskID = () => {
-    const id = Math.floor(Math.random() * 100);
+    const id = Math.random().toString(36).slice(2);
     const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
 
     if (!endedTasks || endedTasks.find((element) => element.id == id) == undefined) {
