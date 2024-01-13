@@ -1,8 +1,8 @@
 :root {
     --font-family: 'MaruBuri', serif;
-    --accent-color: #BFD4D9;
-    /* --accent-color-dark: #9FB1B5; */
-    --accent-color-dark: #A7C6D9;
+    --primary-80: #BFD4D9;
+    --primary-70: #9FBEC6;
+    --primary-50: #5F93A0;
     font-family: var(--font-family);
 }
 
@@ -28,7 +28,7 @@ button {
     height: max-content;
     border: 0;
     padding: .5em;
-    background-color: var(--accent-color);
+    background-color: var(--primary-80);
     color: black;
     transition: .1s;
     font-family: var(--font-family);
@@ -38,8 +38,12 @@ button {
 
 @media(hover: hover) and (pointer: fine) {
     button:hover {
-        background-color: var(--accent-color-dark);
+        background-color: var(--primary-70);
     }
+}
+
+a {
+    color: var(--primary-50);
 }
 
 header {
