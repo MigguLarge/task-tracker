@@ -1,9 +1,14 @@
 :root {
-    --font-family: 'MaruBuri', serif;
+    --font-family: 'MaruBuri';
+    --font-extra-light: 'MaruBuriExtraLight';
+    --font-bold: 'MaruBuriBold';
     --primary-80: #BFD4D9;
     --primary-70: #9FBEC6;
     --primary-50: #5F93A0;
+    --text: hsl(0, 0, 0);
+    --text-secondary: hsl(0, 0%, 50%);
     font-family: var(--font-family);
+    color: var(--text);
 }
 
 form {
@@ -128,6 +133,10 @@ header {
 .ended-list__item__info {
     display: flex;
     flex-direction: column;
+}
+
+.ended-list__item__info span:not(.ended-list__item__task-name) {
+    color: var(--text-secondary);
 }
 
 .clear-ended-list-btn {
