@@ -6,6 +6,7 @@ const endTaskTemplate = document.querySelector('#end-task-template');
 const endedListTemplate = document.querySelector('#ended-list-template');
 const endedListItemTemplate = document.querySelector('#ended-list__item-template');
 const noEndedTasksTemplate = document.querySelector('#no-ended-tasks-template');
+const collapsibleTemplate = document.querySelector('#collapsible-template');
 
 const getTime = (dateObj) => {
     if (Object.prototype.toString.call(dateObj) !== "[object Date]") {
@@ -69,12 +70,34 @@ const pageInit = () => {
         const endedList = endedListTemplate.content.cloneNode(true);
         const endedListUl = endedList.querySelector('.ended-list');
         const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+        const startDates = []
+        endedTasks.forEach((task) => {
+            const startDate = getDate(new Date(task.startTime));
+            if (startDates.find((item) => item == startDate) == undefined) {
+                startDates.push(startDate);
+            }
+        });
+
+        startDates.forEach((startDate) => {
+            const collapsibleOuter = collapsibleTemplate.content.cloneNode(true);
+            const collapsible = collapsibleOuter.querySelector('.collapsible');
+            collapsible.classList.add(`collapsible-${startDate}`);
+
+            const collapsibleTitle = collapsible.querySelector('.collapsible__title');
+            collapsibleTitle.textContent = `<${startDate}>`;
+
+            endedListUl.appendChild(collapsible)
+        })
+
         endedTasks.forEach((task) => {
             const startTime = getTime(new Date(task.startTime));
             const startDate = getDate(new Date(task.startTime));
             const endTime = getTime(new Date(task.endTime));
-            const endDate = getDate(new Date(task.endTime));
-            endedListUl.appendChild(
+
+            const collapsible = endedListUl.querySelector(`.collapsible-${startDate}`);
+            const collapsibleInner = collapsible.querySelector('.collapsible__inner');
+
+            collapsibleInner.appendChild(
                 createEndedListElement(task.id, task.taskName, startDate, startTime, endTime)
             );
         });
@@ -116,28 +139,48 @@ const endTaskHandler = (event) => {
 
             localStorage.setItem('endedTasks', JSON.stringify(endedTasks))
 
-            const endedList = endedListTemplate.content.cloneNode(true);
-            const endedListUl = bottomContainer.querySelector('.ended-list');
-            const endedListNewElement = endedListItemTemplate.content.cloneNode(true);
-
             const startTimeObj = new Date(startTime)
 
-            endedListUl.insertBefore(
-                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
-                endedListUl.firstChild
-            );
+            const endedListUl = bottomContainer.querySelector('.ended-list');
+            const collapsible = endedListUl.querySelector(`.collapsible-${getDate(startTimeObj)}`)
+
+            if (collapsible) {
+                collapsible.classList.add('collapsible-active');
+                const collapsibleInner = collapsible.querySelector('.collapsible__inner');
+                collapsibleInner.insertBefore(
+                    createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
+                    collapsibleInner.firstChild
+                );
+            } else {
+                endedListUl.insertBefore(
+                    createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
+                    endedListUl.firstChild
+                );
+            }
         } else {
             localStorage.setItem('endedTasks', JSON.stringify([{ id, taskName, startTime, endTime }]))
             const endedList = endedListTemplate.content.cloneNode(true);
             const endedListUl = endedList.querySelector('ul');
-            const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+            // const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
 
-            const startTimeObj = new Date(startTime)
+            const startTimeObj = new Date(startTime);
+            const startDate = getDate(startTimeObj);
 
-            endedListUl.insertBefore(
-                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
-                endedListUl.firstChild
+            const collapsibleOuter = collapsibleTemplate.content.cloneNode(true);
+            const collapsible = collapsibleOuter.querySelector('.collapsible');
+            collapsible.classList.add(`collapsible-${startDate}`);
+            collapsible.classList.add('collapsible-active');
+
+            const collapsibleTitle = collapsible.querySelector('.collapsible__title');
+            collapsibleTitle.textContent = `<${startDate}>`;
+
+            const collapsibleInner = collapsible.querySelector('.collapsible__inner');
+            collapsibleInner.appendChild(
+                createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime))
             );
+
+            endedListUl.appendChild(collapsible)
+
             bottomContainer.querySelector('.no-ended-tasks').replaceWith(endedList);
         }
         const endTaskForm = event.target;
@@ -170,6 +213,11 @@ const clearEndedList = (event) => {
         bottomContainer.innerHTML = '';
         bottomContainer.appendChild(noEndedTasks);
     }
+}
+
+const collapsibleHandler = (event) => {
+    const collapsible = event.target.parentElement;
+    collapsible.classList.toggle('collapsible-active');
 }
 
 const deleteTask = (element) => {

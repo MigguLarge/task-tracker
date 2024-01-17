@@ -51,6 +51,21 @@ a {
     color: var(--primary-50);
 }
 
+.collapsible__title {
+    color: var(--primary-50);
+    /* text-decoration: underline; */
+    cursor: pointer;
+}
+
+.collapsible__inner {
+    display: none;
+    margin-left: 1em;
+}
+
+.collapsible.collapsible-active .collapsible__inner {
+    display: inherit;
+}
+
 header {
     display: flex;
     flex-direction: column;
@@ -123,6 +138,14 @@ header {
 /* .ended-list__item:last-child { */
 /*     margin: 0; */
 /* } */
+
+.ended-list .collapsible__inner li {
+    margin-bottom: 1em;
+}
+
+.ended-list .collapsible__inner li:last-child {
+    margin-bottom: 0;
+}
 
 .ended-list__item {
     display: flex;

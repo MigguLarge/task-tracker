@@ -46,18 +46,25 @@
         </template>
 
         <template id="ended-list__item-template">
-            <li class="ended-list__item">
-                <span class="ended-list__item__info">
-                    <span class="ended-list__item__task-name">Task Name</span>
-                    <span class="ended-list__item__task-start-date">Start Date</span>
-                    <span class="ended-list__item__task-time">Start Time ~ End Time</span>
-                </span>
-                <button class="ended-list__item__delete-task-btn" onclick="deleteTask(this)">Delete</button>
-            </li>
+                    <li class="ended-list__item">
+                        <span class="ended-list__item__info">
+                            <span class="ended-list__item__task-name">Task Name</span>
+                            <span class="ended-list__item__task-start-date">Start Date</span>
+                            <span class="ended-list__item__task-time">Start Time ~ End Time</span>
+                        </span>
+                        <button class="ended-list__item__delete-task-btn" onclick="deleteTask(this)">Delete</button>
+                    </li>
         </template>
 
         <template id="no-ended-tasks-template">
             <p class="no-ended-tasks">There is no ended tasks yet!</p>
+        </template>
+
+        <template id="collapsible-template">
+            <div class="collapsible">
+                <div class="collapsible__title" onclick="collapsibleHandler(event)">Date</div>
+                <div class="collapsible__inner"></div>
+            </div>
         </template>
         <script src="index.js"></script>
     </body>
