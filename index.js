@@ -234,7 +234,7 @@ const deleteTask = (element) => {
             bottomContainer.innerHTML = '';
             bottomContainer.appendChild(noEndedTasks);
         } else {
-            const id = Number(listElement.getAttribute('id').split('-')[1]);
+            const id = listElement.getAttribute('id').split('-')[1];
             // Map endedTasks to be array of ids to use indexOf function
             const index = endedTasks.map(item => item.id).indexOf(id)
 
