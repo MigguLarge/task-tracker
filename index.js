@@ -78,10 +78,12 @@ const pageInit = () => {
             }
         });
 
-        startDates.forEach((startDate) => {
+        startDates.forEach((startDate, index) => {
             const collapsibleOuter = collapsibleTemplate.content.cloneNode(true);
             const collapsible = collapsibleOuter.querySelector('.collapsible');
             collapsible.classList.add(`collapsible-${startDate}`);
+
+            if (index == 0) collapsible.classList.add(`collapsible-active`);
 
             const collapsibleTitle = collapsible.querySelector('.collapsible__title');
             collapsibleTitle.textContent = `<${startDate}>`;
