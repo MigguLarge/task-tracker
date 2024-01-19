@@ -152,10 +152,22 @@ const endTaskHandler = (event) => {
                     collapsibleInner.firstChild
                 );
             } else {
-                endedListUl.insertBefore(
+                // endedListUl.insertBefore(
+                //     createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
+                //     endedListUl.firstChild
+                // );
+                const collapsibleOuter = collapsibleTemplate.content.cloneNode(true);
+                const collapsibleWrap = collapsibleOuter.querySelector('.collapsible');
+                collapsibleWrap.classList.add(`.collapsible-${getDate(startTimeObj)}`);
+                collapsibleWrap.classList.add('collapsible-active');
+                const collapsibleInner = collapsibleOuter.querySelector('.collapsible__inner');
+                const collapsibleTitle = collapsibleOuter.querySelector('.collapsible__title');
+                collapsibleTitle.textContent = `<${getDate(startTimeObj)}>`;
+                collapsibleInner.insertBefore(
                     createEndedListElement(id, taskName, getDate(startTimeObj), getTime(startTimeObj), getTime(endTime)),
-                    endedListUl.firstChild
+                    collapsibleInner.firstChild
                 );
+                endedListUl.insertBefore(collapsibleOuter, endedListUl.firstChild);
             }
         } else {
             localStorage.setItem('endedTasks', JSON.stringify([{ id, taskName, startTime, endTime }]))
