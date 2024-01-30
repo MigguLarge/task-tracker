@@ -160,7 +160,7 @@ const endTaskHandler = (event) => {
                 // );
                 const collapsibleOuter = collapsibleTemplate.content.cloneNode(true);
                 const collapsibleWrap = collapsibleOuter.querySelector('.collapsible');
-                collapsibleWrap.classList.add(`.collapsible-${getDate(startTimeObj)}`);
+                collapsibleWrap.classList.add(`collapsible-${getDate(startTimeObj)}`);
                 collapsibleWrap.classList.add('collapsible-active');
                 const collapsibleInner = collapsibleOuter.querySelector('.collapsible__inner');
                 const collapsibleTitle = collapsibleOuter.querySelector('.collapsible__title');
