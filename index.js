@@ -1,3 +1,4 @@
+const bulletJournal = document.querySelector('.bullet-journal');
 const topContainer = document.querySelector('.top');
 const bottomContainer = document.querySelector('.bottom');
 
@@ -7,6 +8,34 @@ const endedListTemplate = document.querySelector('#ended-list-template');
 const endedListItemTemplate = document.querySelector('#ended-list__item-template');
 const noEndedTasksTemplate = document.querySelector('#no-ended-tasks-template');
 const collapsibleTemplate = document.querySelector('#collapsible-template');
+
+const createBulletJournal = () => {
+    const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
+    const currentDate = new Date();
+    const currentMonthTasks = endedTasks.filter((task) => new Date(task.endTime).getMonth() == currentDate.getMonth() && new Date(task.endTime).getFullYear() == currentDate.getFullYear());
+    const currentMonthTaskDate = [ ... new Set(currentMonthTasks.map((task) => new Date(task.endTime).getDate()))];
+    const currentMonthLength = [...Array(currentDate.getDate()).keys()].length;
+    let bulletJournalArray = []
+    for (let i = 1; i <= currentMonthLength; i++) {
+        if (currentMonthTaskDate.includes(i)) {
+            bulletJournalArray = [...bulletJournalArray, { date: i, didTask: true }];
+        } else {
+            bulletJournalArray = [...bulletJournalArray, { date: i, didTask: false }];
+        }
+    }
+
+    bulletJournalArray.forEach(task => {
+        if (task.didTask) {
+            const bullet = document.createElement('span');
+            bullet.classList.add('bullet-journal__yes');
+            bulletJournal.appendChild(bullet);
+        } else {
+            const bullet = document.createElement('span');
+            bullet.classList.add('bullet-journal__no');
+            bulletJournal.appendChild(bullet);
+        }
+    })
+}
 
 const getTime = (dateObj) => {
     if (Object.prototype.toString.call(dateObj) !== "[object Date]") {
@@ -55,6 +84,7 @@ const createEndedListElement = (id, taskName, startDate, startTime, endTime) => 
 }
 
 const pageInit = () => {
+    createBulletJournal();
     if (localStorage.getItem('currentTask') !== null) {
         const currentTask = JSON.parse(localStorage.getItem('currentTask'))
         const startTime = new Date(currentTask.startTime);

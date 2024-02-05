@@ -92,6 +92,26 @@ header {
     width: 100%;
 }
 
+.bullet-journal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: max-content;
+    gap: 1em;
+}
+
+.bullet-journal span {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.bullet-journal__yes {
+    background-color: var(--primary-80);
+}
+
+.bullet-journal__no {
+    background-color: rgba(0, 0, 0, .05);
+}
+
 .start-task {
     display: flex;
     justify-content: center;
