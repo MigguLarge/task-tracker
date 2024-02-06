@@ -9,19 +9,17 @@ const endedListItemTemplate = document.querySelector('#ended-list__item-template
 const noEndedTasksTemplate = document.querySelector('#no-ended-tasks-template');
 const collapsibleTemplate = document.querySelector('#collapsible-template');
 
+
 const createBulletJournal = () => {
     const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
     const currentDate = new Date();
-    const currentMonthTasks = endedTasks.filter((task) => new Date(task.endTime).getMonth() == currentDate.getMonth() && new Date(task.endTime).getFullYear() == currentDate.getFullYear());
-    const currentMonthTaskDate = [ ... new Set(currentMonthTasks.map((task) => new Date(task.endTime).getDate()))];
+    const currentMonthTasks = endedTasks.filter((task) => new Date(task.startTime).getMonth() == currentDate.getMonth() && new Date(task.startTime).getFullYear() == currentDate.getFullYear());
+    const currentMonthTaskDates = [ ... new Set(currentMonthTasks.map((task) => new Date(task.endTime).getDate()))];
     const currentMonthLength = [...Array(currentDate.getDate()).keys()].length;
-    let bulletJournalArray = []
-    for (let i = 1; i <= currentMonthLength; i++) {
-        if (currentMonthTaskDate.includes(i)) {
-            bulletJournalArray = [...bulletJournalArray, { date: i, didTask: true }];
-        } else {
-            bulletJournalArray = [...bulletJournalArray, { date: i, didTask: false }];
-        }
+    const bulletJournalArray = []
+    for (let date = 1; date <= currentMonthLength; date++) {
+        const didTask = currentMonthTaskDates.includes(date);
+        bulletJournalArray.push({ date, didTask });
     }
 
     bulletJournalArray.forEach(task => {
