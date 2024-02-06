@@ -96,7 +96,7 @@ header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: max-content;
-    gap: 1em;
+    gap: .5em;
 }
 
 .bullet-journal span {
