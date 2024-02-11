@@ -41,6 +41,10 @@ button {
     white-space: nowrap;
 }
 
+input, button {
+    font-size: 1rem;
+}
+
 @media(hover: hover) and (pointer: fine) {
     button:hover {
         background-color: var(--primary-70);
@@ -203,9 +207,5 @@ footer {
     .content {
         border-left: none;
         border-right: none;
-    }
-
-    input, button {
-        font-size: 1rem;
     }
 }
