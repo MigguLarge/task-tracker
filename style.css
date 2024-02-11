@@ -93,9 +93,10 @@ header {
 }
 
 .bullet-journal {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    width: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-items: center;
     gap: .5em;
 }
 
