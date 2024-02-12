@@ -9,8 +9,10 @@ const endedListItemTemplate = document.querySelector('#ended-list__item-template
 const noEndedTasksTemplate = document.querySelector('#no-ended-tasks-template');
 const collapsibleTemplate = document.querySelector('#collapsible-template');
 
-
 const createBulletJournal = () => {
+	if (!localStorage.getItem('endedTasks')) {
+		return;
+	}
     const endedTasks = JSON.parse(localStorage.getItem('endedTasks'));
     const currentDate = new Date();
     const currentMonthTasks = endedTasks.filter((task) => new Date(task.startTime).getMonth() == currentDate.getMonth() && new Date(task.startTime).getFullYear() == currentDate.getFullYear());
